@@ -21,19 +21,7 @@ HWND m_hWnd;
 DWORD DeviceId;
 tagMCI_OPEN_PARMSA mciOpenMusic;
 // CMPlayerBasicVersionView
-void Load(HWND hWnd, CString strFilepath)
-{
-	m_hWnd = hWnd;
-	mciSendCommand(DeviceId, MCI_CLOSE, 0, 0);	//在加载文件前清空上次播放的音乐
-	mciOpenMusic.lpstrElementName = strFilepath;//将音乐文件路径穿给设备
-	DWORD dwReturn;
-	if (dwReturn = mciSendCommand(NULL, MCI_OPEN, MCI_OPEN_ELEMENT | MCI_WAIT, (DWORD)(LPVOID)(&mciOpenMusic)))
-	{
-		char buffer[256];
-		mciGetErrorString(dwReturn, buffer, 256);
-	}
-	DeviceId = mciOpenMusic.wDeviceID;
-}
+
 IMPLEMENT_DYNCREATE(CMPlayerBasicVersionView, CView)
 
 BEGIN_MESSAGE_MAP(CMPlayerBasicVersionView, CView)
@@ -60,7 +48,12 @@ CMPlayerBasicVersionView::CMPlayerBasicVersionView() noexcept
 	// TODO: 在此处添加构造代码
 	m_DeviceID = 0;
 	m_PathOfMusicDoc = NULL;
-	//	m_NameOfMusicDoc = NULL;
+	m_NameOfMusicDoc = NULL;
+	P_ButtonPause = NULL;
+	P_ButtonPause = NULL;
+	P_ButtonStop = NULL;
+	numberOfFiles = 0;
+	NameOfFileFolder = L"";
 
 }
 
@@ -194,32 +187,42 @@ CMPlayerBasicVersionDoc* CMPlayerBasicVersionView::GetDocument() const // 非调
 void CMPlayerBasicVersionView::OnFileNew()
 {
 	// TODO: 在此添加命令处理程序代码
-	//打开文件管理器，选择歌曲
-	//读取歌曲路径
+		//打开文件管理器，选择歌曲
+		//读取歌曲路径
 	CFileDialog DocSelectDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT, "MP3音频文件(*.mp3)|*.mp3", NULL);
 	DocSelectDlg.m_ofn.nMaxFile = 100 * MAX_PATH;     // 100   Files   
 	DocSelectDlg.m_ofn.lpstrFile = new   TCHAR[DocSelectDlg.m_ofn.nMaxFile];
 	ZeroMemory(DocSelectDlg.m_ofn.lpstrFile, sizeof(TCHAR) * DocSelectDlg.m_ofn.nMaxFile);
 	CString buf[1000];
-	int num = 0;
+	//	int num = 0;
 	if (DocSelectDlg.DoModal() == IDCANCEL)return;
 	else
 	{
 		POSITION pos = DocSelectDlg.GetStartPosition();
 		while (pos != NULL)
 		{
-			buf[num] = DocSelectDlg.GetNextPathName(pos);
-			num++;
+			buf[numberOfFiles] = DocSelectDlg.GetNextPathName(pos);
+			numberOfFiles++;
 		}
+		//		pos = DocSelectDlg.GetStartPosition();
+
 		int i = 0;
-		m_PathOfMusicDoc = new CString[num];
-		for (; i < num; i++)
+		m_PathOfMusicDoc = new CString[numberOfFiles];
+		m_NameOfMusicDoc = new CString[numberOfFiles];
+		pos = DocSelectDlg.GetStartPosition();
+		while (pos != NULL)
 		{
-			m_PathOfMusicDoc[i] = buf[i];			//采集所有已添加歌曲的路径信息
+			m_NameOfMusicDoc[i] = DocSelectDlg.GetFileName();
+			m_PathOfMusicDoc[i] = DocSelectDlg.GetNextPathName(pos);
 		}
+
+		/*		for (; i < numberOfFiles; i++)
+				{
+					m_PathOfMusicDoc[i] = buf[i];			//采集所有已添加歌曲的路径信息
+
+				}*/
 	}
 	//	if (DocSelectDlg.DoModal() == IDOK)m_PathOfMusicDoc = DocSelectDlg.GetPathName();
-
 
 
 

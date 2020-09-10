@@ -5,7 +5,7 @@
 #pragma once
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
-
+#include<vector>
 class CMPlayerBasicVersionView : public CView
 {
 protected: // 仅从序列化创建
@@ -57,8 +57,10 @@ private:
 	CButton* P_ButtonPause;         //暂停按钮的指针
 	CButton* P_ButtonStop;          //停止按钮的指针
 	CString* m_PathOfMusicDoc;		//添加歌曲文件时的路径
-//	CString* m_NameOfMusicDoc;		//歌曲文件名
-	CString NameOfFileFolder;
+	CString* m_NameOfMusicDoc;		//歌曲文件名
+	CString NameOfFileFolder;		//文件夹路径
+	int numberOfFiles;				//文件的数量
+
 public:
 	afx_msg void OnAddFileFolder();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

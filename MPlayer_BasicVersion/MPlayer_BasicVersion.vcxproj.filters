@@ -57,6 +57,9 @@
     <ClInclude Include="TabSheet.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SONGLIST.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MPlayer_BasicVersion.cpp">
@@ -90,6 +93,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TabSheet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SONGLIST.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
